@@ -1,7 +1,30 @@
 import random
 
 def main():
-    print('hello world')
+    numRounds = [10,100,1000,10000,100000,1000000]
+    numDoorsList = [3,6,9,20,100]
+    playerSwitchList = [False, True]
+    openWinningDoorList = [False, True]
+    
+    lines = []
+    header = 'rounds,num doors,switch policy,winning door policy,wins,win %\n'
+    lines.append(header)
+    for rounds in numRounds:
+        print(rounds)
+        for numDoors in numDoorsList:
+            for playerSwitch in  playerSwitchList:
+                for openWinningDoor in openWinningDoorList:
+                    wins = 0
+                    for i in range(rounds):
+                        if game_round(numDoors, playerSwitch, openWinningDoor):
+                            wins += 1
+                            
+                    # store result to be saved
+                    line = f'{rounds},{numDoors},{playerSwitch},{openWinningDoor},{wins},{wins/rounds}\n'
+                    lines.append(line)
+                
+    with open('montyhallresult.csv', 'w') as FILE:
+        FILE.writelines(lines)    
     
 def game_round(numDoors: int, isPlayerSwitch: bool, isOpenWinningDoor: bool) -> bool:
     """play a round of the monty hall game
